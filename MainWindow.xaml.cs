@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,37 @@ namespace IntuneWinAppUtilGUI
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnGenerate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSaveTemplate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnChooseSetupDirectory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnChooseSetupFile_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.Filter = "All files (.*)|*.*";
+            bool? result = dialog.ShowDialog();
+            if (result == true)
+            {
+                txtSetupFile.Text = dialog.FileName;
+            }
+        }
+
+        private void btnChooseOutputDirectory_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

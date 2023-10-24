@@ -5,45 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IntuneWinAppUtilGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="10">
+        Title="IntuneWinAppUtil GUI" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Label>Saved templates</Label>
-        <ListBox Grid.Row="1" x:Name="lstTemplates" />
-        <Grid Grid.Row="1" Grid.Column="1" Margin="5,5,5,0">
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <Menu>
+                    <MenuItem Header="_Settings" x:Name="menuSettings" Click="menuSettings_Click"></MenuItem>
+                </Menu>
+                
+            </StackPanel>
+        </Grid>
+        <Grid Margin="10" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackPanel Margin="0,0,0,0">
-                <Label>Template name</Label>
-                <TextBox x:Name="txtTemplateName" Margin="5,0,5,0" />
-                <Label>Setup files directory</Label>
-                <TextBox x:Name="txtSetupDirectory" Margin="5,0,5,0"/>
-                <Button x:Name="btnChooseSetupDirectory" Margin="5,5,5,0" Click="btnChooseSetupDirectory_Click">Choose setup files directory...</Button>
-                <Label>Setup file</Label>
-                <TextBox x:Name="txtSetupFile" Margin="5,0,5,0"/>
-                <Button x:Name="btnChooseSetupFile" Margin="5,5,5,0" Click="btnChooseSetupFile_Click">Choose setup file...</Button>
-                <Label>Intunewin file output directory</Label>
-                <TextBox x:Name="txtOutputDirectory" Margin="5,0,5,0"/>
-                <Button x:Name="btnChooseOutputDirectory" Margin="5,5,5,0" Click="btnChooseOutputDirectory_Click">Choose output directory...</Button>
-                
-            </StackPanel>
-            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
-                <Button x:Name="btnSaveTemplate" Margin="5,5,5,0" Click="btnSaveTemplate_Click">Save as template</Button>
-                <Button x:Name="btnGenerate" Margin="5,5,5,0" Click="btnGenerate_Click">Generate .intunewin</Button>
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <Label>History</Label>
+            <DataGrid Grid.Row="1" x:Name="dataGridGenerationsHistory" ></DataGrid>
+            <Grid Grid.Row="1" Grid.Column="1" Margin="5,5,5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Margin="0,0,0,0">
+                    <Label>Setup files directory</Label>
+                    <TextBox x:Name="txtSetupDirectory" Margin="5,0,5,0"/>
+                    <Button x:Name="btnChooseSetupDirectory" Margin="5,5,5,0" Click="btnChooseSetupDirectory_Click">Choose setup files directory...</Button>
+                    <Label>Setup file</Label>
+                    <TextBox x:Name="txtSetupFile" Margin="5,0,5,0"/>
+                    <Button x:Name="btnChooseSetupFile" Margin="5,5,5,0" Click="btnChooseSetupFile_Click">Choose setup file...</Button>
+                    <Label>Intunewin file output directory</Label>
+                    <TextBox x:Name="txtOutputDirectory" Margin="5,0,5,0"/>
+                    <Button x:Name="btnChooseOutputDirectory" Margin="5,5,5,0" Click="btnChooseOutputDirectory_Click">Choose output directory...</Button>
+
+                </StackPanel>
+                <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                    <Button x:Name="btnGenerate" Margin="5,5,5,0" Click="btnGenerate_Click">Generate .intunewin</Button>
+                </StackPanel>
+            </Grid>
         </Grid>
         
+
 
     </Grid>
 </Window>

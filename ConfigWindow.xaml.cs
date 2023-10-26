@@ -30,6 +30,7 @@ namespace IntuneWinAppUtilGUI
         private void LoadSettings()
         {
             txtIntuneWinAppUtilLocation.Text = Properties.Settings.Default.IntuneWinAppUtilLocation;
+            txtDefaultOutputDirectory.Text = Properties.Settings.Default.DefaultOutputDirectory;
         }
 
         private void btnChooseIntuneWinAppUtilLocation_Click(object sender, RoutedEventArgs e)
@@ -73,6 +74,7 @@ namespace IntuneWinAppUtilGUI
         private void SaveSettings()
         {
             Properties.Settings.Default.IntuneWinAppUtilLocation = txtIntuneWinAppUtilLocation.Text;
+            Properties.Settings.Default.DefaultOutputDirectory = txtDefaultOutputDirectory.Text;
             Properties.Settings.Default.Save();
             Properties.Settings.Default.Reload();
             Close();
@@ -95,6 +97,16 @@ namespace IntuneWinAppUtilGUI
 
             }
             
+        }
+
+        private void btnChooseDefaultOutputDirectoryLocation_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFolderDialog();
+            bool? result = dialog.ShowDialog();
+            if (result == true)
+            {
+                txtDefaultOutputDirectory.Text = dialog.FolderName;
+            }
         }
     }
 }

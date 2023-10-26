@@ -3,6 +3,7 @@ using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,15 +25,83 @@ namespace IntuneWinAppUtilGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        GenerationManager generationManager = new GenerationManager();
         public MainWindow()
         {
             InitializeComponent();
-            dataGridGenerationsHistory.ItemsSource = Settings.Default.GenerationsHistory;
+            RefreshGenerationList();
         }
 
         private void btnGenerate_Click(object sender, RoutedEventArgs e)
         {
+            var SetupFilesDirectory = txtSetupDirectory.Text;
+            var SetupFile = txtSetupFile.Text;
+            var OutputDirectory = txtOutputDirectory.Text;
+            Generation generation = new Generation(SetupFilesDirectory, SetupFile, OutputDirectory);
+            if (string.IsNullOrWhiteSpace(SetupFilesDirectory) || string.IsNullOrWhiteSpace(SetupFile) || string.IsNullOrWhiteSpace(OutputDirectory))
+            {
+                string messageBoxText = "One or more required paths are not provided.";
+                string caption = "Error";
+                MessageBoxResult result;
+                result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
+            if (!Directory.Exists(SetupFilesDirectory) || !Directory.Exists(OutputDirectory) || !File.Exists(System.IO.Path.Combine(SetupFilesDirectory,  SetupFile)))
+            {
+                string messageBoxText = "One or more specified directories or files do not exist.";
+                string caption = "Error";
+                MessageBoxResult result;
+                result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string intuneWinAppUtilLocation = Properties.Settings.Default.IntuneWinAppUtilLocation;
+
+            if (string.IsNullOrWhiteSpace(intuneWinAppUtilLocation) || !File.Exists(intuneWinAppUtilLocation))
+            {
+                string messageBoxText = "IntuneWinAppUtil program does not exist at the specified location.";
+                string caption = "Error";
+                MessageBoxResult result;
+                result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string arguments = $"-o {OutputDirectory} -c {SetupFilesDirectory} -s {SetupFile} -q";
+            ProcessStartInfo startInfo = new ProcessStartInfo(intuneWinAppUtilLocation)
+            {
+                Arguments = arguments,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true
+            };
+
+            using (Process process = new Process() { StartInfo = startInfo })
+            {
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                string[] lines = output.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                if (lines.Length > 0)
+                {
+                    if(lines[lines.Length - 1] == "INFO   Done!!!")
+                    {
+                        if (!generationManager.GetGenerationList().Any(gen => gen.SetupFilesDirectory == generation.SetupFilesDirectory && gen.SetupFile == generation.SetupFile))
+                        {
+                            generationManager.AddGeneration(generation);
+                        }
+                        RefreshGenerationList();
+
+                    }
+                }
+                string caption = "IntuneWinAppUtil output";
+                MessageBoxResult result;
+                result = MessageBox.Show(output, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+            }
+            
         }
 
         private void btnChooseSetupDirectory_Click(object sender, RoutedEventArgs e)
@@ -42,7 +111,14 @@ namespace IntuneWinAppUtilGUI
             if (result == true)
             {
                 txtSetupDirectory.Text = dialog.FolderName;
-                txtSetupFile.Text = dialog.FolderName;
+                if(txtSetupFile.Text == "")
+                {
+                    txtSetupFile.Text = dialog.FolderName;
+                }
+                if (txtOutputDirectory.Text == "")
+                {
+                    txtOutputDirectory.Text = Directory.GetParent(txtSetupDirectory.Text).FullName;
+                }
             }
         }
 
@@ -95,5 +171,12 @@ namespace IntuneWinAppUtilGUI
                 ShowSettingsWindow();
             }
         }
+
+        private void RefreshGenerationList()
+        {
+            dataGridGenerationsHistory.ItemsSource = generationManager.GetGenerationList();
+            dataGridGenerationsHistory.Items.Refresh();
+        }
+
     }
 }

@@ -31,7 +31,13 @@
 
 
             <Label>History</Label>
-            <DataGrid Grid.Row="1" x:Name="dataGridGenerationsHistory" ></DataGrid>
+            <DataGrid Grid.Row="1" x:Name="dataGridGenerationsHistory"  IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Directory" Binding="{Binding SetupFilesDirectory}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Setup file" Binding="{Binding SetupFile}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Date" Binding="{Binding GenerationDate}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
             <Grid Grid.Row="1" Grid.Column="1" Margin="5,5,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

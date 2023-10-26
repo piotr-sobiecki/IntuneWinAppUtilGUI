@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IntuneWinAppUtilGUI"
         mc:Ignorable="d"
-        Title="IntuneWinAppUtil GUI - settings" Height="200" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False" AllowDrop="False" Closing="Window_Closing">
+        Title="IntuneWinAppUtil GUI - settings" Height="250" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False" AllowDrop="False" Closing="Window_Closing">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,6 +15,9 @@
             <Label>IntuneWinAppUtil executable location</Label>
             <TextBox x:Name="txtIntuneWinAppUtilLocation" Margin="5,0,5,0" />
             <Button x:Name="btnChooseIntuneWinAppUtilLocation" Margin="5,5,5,0" Click="btnChooseIntuneWinAppUtilLocation_Click">Choose setup file...</Button>
+            <Label>Default output directory</Label>
+            <TextBox x:Name="txtDefaultOutputDirectory" Margin="5,0,5,0" />
+            <Button x:Name="btnChooseDefaultOutputDirectoryLocation" Margin="5,5,5,0" Click="btnChooseDefaultOutputDirectoryLocation_Click">Choose default output directory...</Button>
         </StackPanel>
         <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
             <Button x:Name="btnSave" Margin="5,5,5,0" Click="btnSave_Click">Save</Button>

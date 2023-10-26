@@ -5,7 +5,7 @@
     <Setting Name="IntuneWinAppUtilLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GenerationsHistory" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="DefaultOutputDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

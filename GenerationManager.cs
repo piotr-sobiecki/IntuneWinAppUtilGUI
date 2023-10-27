@@ -53,5 +53,11 @@ namespace IntuneWinAppUtilGUI
                 }
             }
         }
+
+        internal void RemoveGeneration(Generation generation)
+        {
+            generationList.Remove(generation);
+            SerializeGenerationList();
+        }
     }
 }

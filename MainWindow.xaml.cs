@@ -30,6 +30,7 @@ namespace IntuneWinAppUtilGUI
         {
             InitializeComponent();
             RefreshGenerationList();
+            txtOutputDirectory.Text = Properties.Settings.Default.DefaultOutputDirectory;
         }
 
         private void btnGenerate_Click(object sender, RoutedEventArgs e)
@@ -178,5 +179,40 @@ namespace IntuneWinAppUtilGUI
             dataGridGenerationsHistory.Items.Refresh();
         }
 
+        private void btnRemoveRow_Click(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGenerationsHistory.SelectedItem != null)
+            {
+                Generation selectedItem = (Generation)dataGridGenerationsHistory.SelectedItem;
+                generationManager.RemoveGeneration(selectedItem);
+                dataGridGenerationsHistory.Items.Refresh();
+            }
+        }
+
+        private void dataGridGenerationsHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dataGridGenerationsHistory.SelectedItem != null)
+            {
+                Generation selectedItem = (Generation)dataGridGenerationsHistory.SelectedItem;
+                txtSetupDirectory.Text = selectedItem.SetupFilesDirectory;
+                txtSetupFile.Text = selectedItem.SetupFile;
+                txtOutputDirectory.Text = selectedItem.OutputDirectory;
+            } else
+            {
+                CleanTextBoxes();
+            }
+        }
+
+        private void CleanTextBoxes()
+        {
+            txtSetupDirectory.Text = "";
+            txtSetupFile.Text = "";
+            txtOutputDirectory.Text = "";
+        }
+
+        private void btnCleanPaths_Click(object sender, RoutedEventArgs e)
+        {
+            CleanTextBoxes();
+        }
     }
 }

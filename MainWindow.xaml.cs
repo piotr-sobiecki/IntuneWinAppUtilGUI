@@ -26,6 +26,7 @@ namespace IntuneWinAppUtilGUI
     public partial class MainWindow : Window
     {
         GenerationManager generationManager = new GenerationManager();
+        private bool btnClicked = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -118,7 +119,7 @@ namespace IntuneWinAppUtilGUI
                 }
                 if (txtOutputDirectory.Text == "")
                 {
-                    txtOutputDirectory.Text = Directory.GetParent(txtSetupDirectory.Text).FullName;
+                    txtOutputDirectory.Text = Directory.GetParent(txtSetupDirectory.Text)!.FullName;
                 }
             }
         }
@@ -179,28 +180,33 @@ namespace IntuneWinAppUtilGUI
             dataGridGenerationsHistory.Items.Refresh();
         }
 
-        private void btnRemoveRow_Click(object sender, RoutedEventArgs e)
-        {
-            if (dataGridGenerationsHistory.SelectedItem != null)
-            {
-                Generation selectedItem = (Generation)dataGridGenerationsHistory.SelectedItem;
-                generationManager.RemoveGeneration(selectedItem);
-                dataGridGenerationsHistory.Items.Refresh();
-            }
-        }
 
         private void dataGridGenerationsHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dataGridGenerationsHistory.SelectedItem != null)
+            if (btnClicked)
             {
-                Generation selectedItem = (Generation)dataGridGenerationsHistory.SelectedItem;
-                txtSetupDirectory.Text = selectedItem.SetupFilesDirectory;
-                txtSetupFile.Text = selectedItem.SetupFile;
-                txtOutputDirectory.Text = selectedItem.OutputDirectory;
-            } else
-            {
-                CleanTextBoxes();
+                if (dataGridGenerationsHistory.SelectedItem != null)
+                {
+                    Generation selectedItem = (Generation)dataGridGenerationsHistory.SelectedItem;
+                    generationManager.RemoveGeneration(selectedItem);
+                    dataGridGenerationsHistory.Items.Refresh();
+                }
             }
+            else
+            {
+                if (dataGridGenerationsHistory.SelectedItem != null)
+                {
+                    Generation selectedItem = (Generation)dataGridGenerationsHistory.SelectedItem;
+                    txtSetupDirectory.Text = selectedItem.SetupFilesDirectory;
+                    txtSetupFile.Text = selectedItem.SetupFile;
+                    txtOutputDirectory.Text = selectedItem.OutputDirectory;
+                }
+                else
+                {
+                    CleanTextBoxes();
+                }
+            }
+            
         }
 
         private void CleanTextBoxes()
@@ -213,6 +219,11 @@ namespace IntuneWinAppUtilGUI
         private void btnCleanPaths_Click(object sender, RoutedEventArgs e)
         {
             CleanTextBoxes();
+        }
+
+        private void btnRemoveRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            btnClicked = true;
         }
     }
 }

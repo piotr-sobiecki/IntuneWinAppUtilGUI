@@ -69,7 +69,7 @@ namespace IntuneWinAppUtilGUI
                 return;
             }
 
-            string arguments = $"-o {OutputDirectory} -c {SetupFilesDirectory} -s {SetupFile} -q";
+            string arguments = $"-o \"{OutputDirectory}\" -c \"{SetupFilesDirectory}\" -s \"{SetupFile}\" -q";
             ProcessStartInfo startInfo = new ProcessStartInfo(intuneWinAppUtilLocation)
             {
                 Arguments = arguments,
